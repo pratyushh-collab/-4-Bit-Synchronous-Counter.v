@@ -1,0 +1,31 @@
+module testbench;
+  reg test_clk,test_rst;
+  wire [3:0]test_count;
+  
+  sync_counter_4bit DUT(.clk(test_clk), .rst(test_rst), .count(test_count)
+                       );
+  always begin
+    #5 
+ test_clk = ~test_clk;
+  end
+  initial
+    begin
+      test_clk =1'b0;
+      test_rst =1'b1;
+      #10;
+
+      if(test_rst == test_clk)begin
+        $display("SUCCESS:test_count(%b)=4'b0000",test_count);
+      end else
+        $display("FAIL:test_count(%b)= 4'b0001",test_count);
+      
+     test_clk =1'b1;
+      test_rst =1'b1;
+      #100;
+
+      if(test_rst == test_clk)begin
+        $display("SUCCESS:test_count(%b)=4'b0000",test_count);
+      end else
+        $display("FAIL:test_count(%b)= 4'b0001",test_count);
+    end
+endmodule
